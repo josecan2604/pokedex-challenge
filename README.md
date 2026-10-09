@@ -219,7 +219,7 @@ Ready-made requests:
 
 ## Error handling
 
-Every service answers errors with the same [RFC 9457](https://www.rfc-editor.org/rfc/rfc9457) body
+Every service answers errors with the same body
 (`application/problem+json`), so the frontend handles them one way:
 
 ```json
@@ -243,8 +243,6 @@ Every service answers errors with the same [RFC 9457](https://www.rfc-editor.org
 | 502 | PokeAPI failed (API) |
 | 503 / 504 | A backend service is down / too slow (mapped at the gateway instead of a generic 500) |
 | 500 | Unexpected: logged with details, generic message to the client |
-
-The token endpoint follows OAuth2's own error format (RFC 6749 §5.2): `{"error": "invalid_grant", ...}`.
 
 ---
 
