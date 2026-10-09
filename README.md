@@ -294,5 +294,4 @@ pokedex-challenge/
 
 ## GenAI
 
-The GenAI exercise (task-management API prompt, output, validation and corrections) and how AI tools were used
-in this project are documented in **[docs/GENAI.md](docs/GENAI.md)**.
+[Gen AI](docs/GENAI.md)
