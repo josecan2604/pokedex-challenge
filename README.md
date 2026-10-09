@@ -199,10 +199,7 @@ All through the gateway at `http://localhost:8080`. Full OpenAPI docs: `/swagger
 | PUT | `/api/local-pokemon/{id}` | **USER** | US04: `{localizedName, region, tags[], notes, version}` |
 | DELETE | `/api/local-pokemon/{id}` | **ADMIN** | **204** |
 
-Ready-made requests:
-- **Postman:** [`postman/`](postman). Import the collection and environment, then *Run collection*
-  (33 requests, 43 assertions; tokens are captured automatically).
-- **IntelliJ HTTP client:** [`pokedex-gateway/http/gateway.http`](pokedex-gateway/http/gateway.http)
+
 
 ---
 
