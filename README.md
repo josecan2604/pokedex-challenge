@@ -36,23 +36,33 @@ Four independent projects, each with its own build, tests and Dockerfile:
 | [`pokedex-auth`](pokedex-auth) | 8082 | Authorization server: users, registration, password checks, **token issuing** (RS256), JWKS. |
 | [`pokedex-api`](pokedex-api) | 8081 | Resource server: PokeAPI integration, local replica (CRUD), validates JWTs again. |
 
-```mermaid
-flowchart LR
-    web["pokedex-web<br/>React SPA"] -->|"all calls"| gw
-
-    subgraph edge [" "]
-      gw["pokedex-gateway :8080<br/>routing · JWT filter · CORS · 401/403/503/504"]
-    end
-
-    gw -->|"/oauth2/** · /auth/**"| auth["pokedex-auth :8082<br/>users · BCrypt · signs JWT · JWKS"]
-    gw -->|"/api/** (valid token only)"| api["pokedex-api :8081<br/>Clean Architecture · resource server"]
-
-    gw -. "fetch + cache JWKS" .-> auth
-    api -. "fetch + cache JWKS" .-> auth
-    api -->|"cached"| pokeapi[("PokeAPI")]
-
-    auth --- authdb[("pokedex_auth DB<br/>app_user")]
-    api --- apidb[("pokedex DB<br/>local_pokemon")]
+```
+                          ┌─────────────────────────────────────┐
+             /oauth2/**   │ pokedex-auth  :8082                 │      ┌──────────────────┐
+             /auth/**     │ • POST /auth/register               │──────│ pokedex_auth DB  │
+          ┌──────────────►│ • POST /oauth2/token  (signs JWT)   │      │ app_user         │
+          │               │ • GET  /oauth2/jwks   (public key)  │      └──────────────────┘
+          │               └──────────▲──────────────────▲───────┘
+          │                          │ fetch + cache     │ fetch + cache
+          │                          │ JWKS              │ JWKS
+┌─────────┴────────┐       ┌─────────┴──────────┐        │
+│ pokedex-web      │──────►│ pokedex-gateway    │        │
+│ React SPA        │ all   │ :8080              │        │
+│ :5173 / :3000    │ calls │ • routing          │        │
+└──────────────────┘       │ • JWT filter       │        │
+                           │ • access rules     │        │
+                           │ • CORS             │        │
+                           │ • 401/403/503/504  │        │
+                           └─────────┬──────────┘        │
+                                     │ /api/**           │
+                                     │ (valid token only)│
+                                     ▼                   │
+                           ┌────────────────────────┐    │       ┌──────────────────┐
+                           │ pokedex-api  :8081     │────┘       │ pokedex DB       │
+                           │ Clean Architecture     │────────────│ local_pokemon    │
+                           │ resource server        │            └──────────────────┘
+                           │ (validates JWT again)  │──────────► PokeAPI (cached)
+                           └────────────────────────┘
 ```
 
 ### Request flow
