@@ -60,7 +60,16 @@ Four independent projects, each with its own build, tests and Dockerfile:
                            │ pokedex-api  :8081     │────┘       │ pokedex DB       │
                            │ Clean Architecture     │────────────│ local_pokemon    │
                            │ resource server        │            └──────────────────┘
-                           │ (validates JWT again)  │──────────► PokeAPI (cached)
+                           │ (validates JWT again)  │
+                           └───────────┬────────────┘
+                                       │ HTTPS, cached (Caffeine)
+                                       │ /pokemon, /pokemon-species,
+                                       │ /evolution-chain
+                                       ▼
+                           ┌────────────────────────┐
+                           │ PokeAPI  (external)    │
+                           │ https://pokeapi.co     │
+                           │ public, read-only      │
                            └────────────────────────┘
 ```
 
