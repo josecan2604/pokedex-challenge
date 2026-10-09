@@ -14,7 +14,7 @@ PostgreSQL (H2 for zero-setup runs) · Caffeine cache · React 19 + TypeScript +
 1. [Architecture](#architecture)
 2. [User stories](#user-stories)
 3. [Quick start](#quick-start)
-4. [Demo accounts](#demo-accounts)
+4. [Accounts](#accounts)
 5. [API reference](#api-reference)
 6. [Security](#security)
 7. [Error handling](#error-handling)
@@ -161,7 +161,7 @@ All settings have working defaults; override them with environment variables:
 
 ---
 
-## Demo accounts
+## Accounts
 
 | Username | Password | Role | Can |
 |---|---|---|---|
