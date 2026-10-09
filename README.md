@@ -223,13 +223,6 @@ Ready-made requests:
 | **pokedex-api** | Independent OAuth2 resource server with the same JWKS and rules: requests that bypass the gateway are still rejected (**defense in depth**). |
 | **pokedex-web** | Token in `sessionStorage`, auto sign-out at expiry or on any 401; route guards are UX only, since the servers enforce the real rules. |
 
-**Access rules:** reading is public; syncing and editing need a USER token; deleting needs ADMIN.
-
-**Production notes:** configure PEM keys (`JWT_PRIVATE_KEY_LOCATION`…) so tokens survive restarts and
-replicas agree; the password grant is used because the SPA is a first-party client, and the production path
-is **Authorization Code + PKCE**, either through this auth server or an IdP such as Keycloak. The gateway and
-the API would not change, because they depend only on `jwks-uri`, `issuer` and `audience`.
-
 ---
 
 ## Error handling
