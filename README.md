@@ -152,22 +152,6 @@ cd pokedex-web     && npm install && npm run dev   # :5173
 
 Open http://localhost:5173. Data is seeded on every start (6 local Pokémon, 2 demo users).
 
-### Configuration
-
-All settings have working defaults; override them with environment variables:
-
-| Variable | Service | Default | Purpose |
-|---|---|---|---|
-| `AUTH_URL` / `API_URL` | gateway | `localhost:8082` / `:8081` | Route targets |
-| `JWT_ISSUER` | all | `http://localhost:8080` | `iss` claim (issued and checked) |
-| `JWT_AUDIENCE` | all | `pokedex-api` | `aud` claim |
-| `JWT_JWKS_URI` / `JWT_JWK_SET_URI` | gateway / api | auth's `/oauth2/jwks` | Where to fetch signing keys |
-| `JWT_PRIVATE_KEY_LOCATION`, `JWT_PUBLIC_KEY_LOCATION` | auth | empty: generated at startup | PEM key pair (required in production) |
-| `JWT_TTL` | auth | `1h` | Token lifetime |
-| `CORS_ALLOWED_ORIGINS` | gateway | `localhost:5173,3000` | Allowed browser origins |
-| `SPRING_PROFILES_ACTIVE=postgres` + `DB_*` | auth, api | H2 in-memory | Use PostgreSQL |
-| `VITE_API_BASE_URL` | web | `http://localhost:8080` | Gateway URL (build time) |
-
 ---
 
 ## Accounts
