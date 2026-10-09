@@ -215,24 +215,11 @@ everything, and test the edges myself.**
 
 ---
 
-## 4. How GenAI was used in *this* project
+## 4. How GenAI was used in this project
 
-This repository was built with **Claude Code** as a pair programmer. The same rules applied:
+I defined the architecture and the requirements: the split into gateway, auth server and resource server,
+the OAuth2 flow with local JWT validation through JWKS at the gateway, and the user stories. I gave these to
+Claude Code as input. Based on them, the AI generated code, especially the frontend and the test cases.
 
-- **I owned the design decisions; the AI proposed and implemented.** Examples where I steered: the
-  architecture went from three to four services. The first version split identity between the gateway (which
-  signed tokens) and the API (which held the users), which needed an internal verification call with a shared
-  secret. Reviewing it, I asked for a dedicated **auth service**, which removed the internal call and the
-  shared secret.
-- **Everything was executed, not just generated.** Each step ended with the test suites running and live
-  checks against PokeAPI. That caught real bugs the code looked fine without:
-  - **CORS:** Spring Cloud Gateway's `globalcors` only covers *routed* requests, so the token endpoint (then
-    served by the gateway itself) had no CORS headers. Postman and curl don't enforce CORS, so it only failed
-    **in the browser**. Fixed with a `CorsWebFilter`, plus regression tests.
-  - **Error mapping:** a "connection refused" to a downed service surfaced as an `UnknownHostException`
-    wrapped in other exceptions, so the first mapping returned 500 instead of 503. A test caught it, and the
-    mapper now walks the whole cause chain.
-  - **Partial refactor:** during the identity redesign, files were deleted before the target design was
-    agreed. Lesson: agree on the design, *then* change code.
-- **Guardrails kept the output honest:** ArchUnit for the layering, strict TypeScript and ESLint, and tests
-  for every status code, so "the AI says it works" was never the evidence.
+I reviewed the output, asked for changes where it didn't fit the design (for example, moving identity into
+a dedicated auth service), and validated each step by running the tests and the services.
