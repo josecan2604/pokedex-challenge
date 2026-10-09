@@ -3,9 +3,9 @@
 **Note:** this is a separate exercise, as requested in the challenge's "Generative AI tools" section.
 It is not part of the Pokédex application; the task management API below is the scenario the challenge asks for.
 
-> *Using a GenAI coding tool, write the prompt you would use to generate a RESTful API for a task
-> management system (CRUD; title, description, status, due_date; tasks belong to a user). Show the output,
-> and describe how you validated it, corrected it, and handled edge cases, authentication and validation.*
+*Using a GenAI coding tool, write the prompt you would use to generate a RESTful API for a task
+management system (CRUD; title, description, status, due_date; tasks belong to a user). Show the output,
+and describe how you validated it, corrected it, and handled edge cases, authentication and validation.*
 
 Tool: **Claude Code** (agentic coding assistant in the terminal/IDE).
 
