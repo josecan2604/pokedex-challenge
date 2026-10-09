@@ -1,0 +1,81 @@
+# Full stack: docker compose up --build
+#   Frontend  http://localhost:3000
+#   Gateway   http://localhost:8080   (the only backend entry point for clients)
+# pokedex-auth and pokedex-api are only reachable inside the compose network.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: pokedex
+      POSTGRES_USER: pokedex
+      POSTGRES_PASSWORD: pokedex
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U pokedex -d pokedex"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  auth:
+    build: ./pokedex-auth
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      DB_HOST: postgres
+      DB_NAME: pokedex_auth
+      DB_USER: pokedex
+      DB_PASSWORD: pokedex
+      # "iss" claim: the public URL clients reach the auth server at (through the gateway)
+      JWT_ISSUER: http://localhost:8080
+      JWT_AUDIENCE: pokedex-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build: ./pokedex-api
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres
+      DB_HOST: postgres
+      DB_NAME: pokedex
+      DB_USER: pokedex
+      DB_PASSWORD: pokedex
+      JWT_JWK_SET_URI: http://auth:8082/oauth2/jwks
+      JWT_ISSUER: http://localhost:8080
+      JWT_AUDIENCE: pokedex-api
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  gateway:
+    build: ./pokedex-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      AUTH_URL: http://auth:8082
+      API_URL: http://api:8081
+      JWT_JWKS_URI: http://auth:8082/oauth2/jwks
+      JWT_ISSUER: http://localhost:8080
+      JWT_AUDIENCE: pokedex-api
+      CORS_ALLOWED_ORIGINS: http://localhost:3000,http://localhost:5173
+    depends_on:
+      auth:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ./pokedex-web
+      args:
+        VITE_API_BASE_URL: http://localhost:8080
+    ports:
+      - "3000:80"
+    depends_on:
+      gateway:
+        condition: service_healthy
+
+volumes:
+  pgdata:

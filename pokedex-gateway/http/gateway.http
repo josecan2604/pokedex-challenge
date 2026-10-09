@@ -1,0 +1,167 @@
+### Pokedex gateway - manual requests
+### IntelliJ HTTP Client: open this file and click the green arrow next to each request
+### (or "Run all requests in file"). Pick the "local" environment from http-client.env.json.
+### Run the "Login" requests first: they store {{userToken}} / {{adminToken}} for the rest.
+###
+### Flow: client -> gateway (:8080) -> pokedex-auth (:8082) for /oauth2/** and /auth/**
+###                                  -> pokedex-api  (:8081) for /api/**
+
+###############################################################################
+# 1. Identity, routed to pokedex-auth
+###############################################################################
+
+### 1.1 JWKS: public keys the gateway and the API validate tokens with
+GET {{gateway}}/oauth2/jwks
+
+### 1.2 Authorization server metadata (RFC 8414)
+GET {{gateway}}/.well-known/oauth-authorization-server
+
+### 1.3 Register a new USER
+POST {{gateway}}/auth/register
+Content-Type: application/json
+
+{ "username": "trainer_{{$random.alphanumeric(6)}}", "email": "trainer{{$random.alphanumeric(6)}}@pokedex.local", "password": "Trainer123" }
+
+### 1.4 Register with invalid values -> 400 with one error per field
+POST {{gateway}}/auth/register
+Content-Type: application/json
+
+{ "username": "x", "email": "not-an-email", "password": "1" }
+
+### 1.5 Register an existing username -> 409
+POST {{gateway}}/auth/register
+Content-Type: application/json
+
+{ "username": "ash", "email": "someone@pokedex.local", "password": "Pikachu123" }
+
+###############################################################################
+# 2. Token endpoint (password grant), routed to pokedex-auth
+###############################################################################
+
+### 2.1 Login as USER (ash) -> stores userToken
+POST {{gateway}}/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=ash&password=Pikachu123
+
+> {%
+    client.test("200 + Bearer token", () => {
+        client.assert(response.status === 200);
+        client.assert(response.body.token_type === "Bearer");
+    });
+    client.global.set("userToken", response.body.access_token);
+%}
+
+### 2.2 Login as ADMIN -> stores adminToken
+POST {{gateway}}/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=admin&password=Admin1234
+
+> {% client.global.set("adminToken", response.body.access_token); %}
+
+### 2.3 Wrong password -> 400 invalid_grant (RFC 6749 5.2)
+POST {{gateway}}/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=ash&password=wrong
+
+### 2.4 Unsupported grant -> 400 unsupported_grant_type
+POST {{gateway}}/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=client_credentials
+
+### 2.5 Missing password -> 400 invalid_request
+POST {{gateway}}/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=ash
+
+###############################################################################
+# 3. Edge JWT validation at the gateway (JwtAuthenticationFilter)
+###############################################################################
+
+### 3.1 Public route, no token -> 200 (forwarded to the API)
+GET {{gateway}}/api/pokemon?page=0&size=5
+
+### 3.2 Protected route, no token -> 401 + WWW-Authenticate: Bearer (never reaches the API)
+PUT {{gateway}}/api/local-pokemon/25
+Content-Type: application/json
+
+{ "localizedName": "Pikachu" }
+
+### 3.3 Protected route, valid USER token -> 200 (validated locally with the cached JWKS, then forwarded)
+PUT {{gateway}}/api/local-pokemon/25
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{ "localizedName": "Pikachu", "region": "Kanto", "tags": ["mascot", "gen-1"] }
+
+### 3.4 Forged token (bad signature) -> 401 error="invalid_token"
+PUT {{gateway}}/api/local-pokemon/25
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIkFETUlOIl19.Zm9yZ2Vk
+Content-Type: application/json
+
+{}
+
+### 3.5 Not a Bearer token -> 401
+PUT {{gateway}}/api/local-pokemon/25
+Authorization: Basic YXNoOlBpa2FjaHUxMjM=
+Content-Type: application/json
+
+{}
+
+### 3.6 Valid USER token on an ADMIN route -> 403 error="insufficient_scope"
+DELETE {{gateway}}/api/local-pokemon/152
+Authorization: Bearer {{userToken}}
+
+### 3.7 Spoofed identity headers are stripped: the API still sees "ash", not "admin"
+GET {{gateway}}/api/local-pokemon/25
+Authorization: Bearer {{userToken}}
+X-User-Name: admin
+X-User-Roles: ADMIN
+
+###############################################################################
+# 4. Routing and status code mapping
+###############################################################################
+
+### 4.1 Downstream status passes through unchanged -> 404 from the API
+GET {{gateway}}/api/local-pokemon/9999
+
+### 4.2 Unrouted path -> 404 problem+json from the gateway
+GET {{gateway}}/does-not-exist
+
+### 4.3 Correlation id: the sent value is echoed back and forwarded downstream
+GET {{gateway}}/api/local-pokemon/25
+X-Correlation-Id: demo-correlation-0001
+
+### 4.4 CORS preflight from the React dev server -> Access-Control-Allow-Origin
+OPTIONS {{gateway}}/api/local-pokemon/25
+Origin: http://localhost:5173
+Access-Control-Request-Method: PUT
+Access-Control-Request-Headers: Authorization, Content-Type
+
+### 4.5 API down -> 503 problem+json (stop pokedex-api first, then run this)
+GET {{gateway}}/api/pokemon
+
+### 4.6 Auth server down -> 503 on login (stop pokedex-auth first, then run this)
+POST {{gateway}}/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&username=ash&password=Pikachu123
+
+###############################################################################
+# 5. Defense in depth: calling the API directly, bypassing the gateway
+###############################################################################
+
+### 5.1 Forged token straight to the API -> 401 (the resource server validates too)
+PUT {{api}}/api/local-pokemon/25
+Authorization: Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJhZG1pbiJ9.Zm9yZ2Vk
+Content-Type: application/json
+
+{}
+
+### 5.2 Real token straight to the API -> 200 (same JWKS from pokedex-auth, same rules)
+GET {{api}}/api/local-pokemon/25
+Authorization: Bearer {{userToken}}

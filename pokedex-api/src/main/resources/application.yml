@@ -1,0 +1,69 @@
+server:
+  port: ${PORT:8081}
+  shutdown: graceful
+  error:
+    include-stacktrace: never
+
+spring:
+  application:
+    name: pokedex-api
+  threads:
+    virtual:
+      enabled: true
+  # Default: in-memory H2 in PostgreSQL mode, so the service runs with zero setup.
+  # Use the "postgres" profile (docker-compose does) for a real database.
+  datasource:
+    url: jdbc:h2:mem:pokedex;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
+    username: sa
+    password:
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate # the schema is owned by Flyway
+    properties:
+      hibernate.jdbc.time_zone: UTC
+  flyway:
+    enabled: true
+  cache:
+    cache-names: pokeapi-pokemon-list,pokeapi-pokemon,pokeapi-species,pokeapi-evolution-chain
+    caffeine:
+      # PokeAPI data is effectively static: cache generously, bound memory by entry count.
+      spec: maximumSize=5000,expireAfterWrite=12h,recordStats
+  jackson:
+    default-property-inclusion: non_null
+
+pokeapi:
+  base-url: ${POKEAPI_BASE_URL:https://pokeapi.co/api/v2}
+  connect-timeout: 3s
+  read-timeout: 10s
+
+security:
+  jwt:
+    # Tokens are issued by pokedex-auth; we validate them locally with its public keys (JWKS).
+    jwk-set-uri: ${JWT_JWK_SET_URI:http://localhost:8082/oauth2/jwks}
+    issuer: ${JWT_ISSUER:http://localhost:8080}
+    audience: ${JWT_AUDIENCE:pokedex-api}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,caches,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+---
+spring:
+  config:
+    activate:
+      on-profile: postgres
+  datasource:
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:pokedex}
+    username: ${DB_USER:pokedex}
+    password: ${DB_PASSWORD:pokedex}

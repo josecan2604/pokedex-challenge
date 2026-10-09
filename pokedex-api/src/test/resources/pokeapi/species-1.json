@@ -1,0 +1,26 @@
+{
+  "id": 1,
+  "name": "bulbasaur",
+  "genera": [
+    { "genus": "Pokémon Graine", "language": { "name": "fr", "url": "https://pokeapi.co/api/v2/language/5/" } },
+    { "genus": "Seed Pokémon", "language": { "name": "en", "url": "https://pokeapi.co/api/v2/language/9/" } }
+  ],
+  "flavor_text_entries": [
+    {
+      "flavor_text": "A strange seed was\nplanted on its\nback at birth.\fThe plant sprouts\nand grows with\nthis POKéMON.",
+      "language": { "name": "en", "url": "https://pokeapi.co/api/v2/language/9/" },
+      "version": { "name": "red", "url": "https://pokeapi.co/api/v2/version/1/" }
+    },
+    {
+      "flavor_text": "Une étrange graine a été plantée sur son dos à la naissance.",
+      "language": { "name": "fr", "url": "https://pokeapi.co/api/v2/language/5/" },
+      "version": { "name": "x", "url": "https://pokeapi.co/api/v2/version/23/" }
+    },
+    {
+      "flavor_text": "While it is young,\nit uses the nutrients that are\fstored in the seed on its back\nin order to grow.",
+      "language": { "name": "en", "url": "https://pokeapi.co/api/v2/language/9/" },
+      "version": { "name": "lets-go-pikachu", "url": "https://pokeapi.co/api/v2/version/31/" }
+    }
+  ],
+  "evolution_chain": { "url": "https://pokeapi.co/api/v2/evolution-chain/1/" }
+}
