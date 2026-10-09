@@ -18,10 +18,9 @@ PostgreSQL (H2 for zero-setup runs) · Caffeine cache · React 19 + TypeScript +
 5. [API reference](#api-reference)
 6. [Security](#security)
 7. [Error handling](#error-handling)
-8. [Testing](#testing)
-9. [Project structure](#project-structure)
-10. [Design decisions and trade-offs](#design-decisions-and-trade-offs)
-11. [GenAI](#genai)
+8. [Project structure](#project-structure)
+9. [Design decisions and trade-offs](#design-decisions-and-trade-offs)
+10. [GenAI](#genai)
 
 ---
 
@@ -253,28 +252,6 @@ Every service answers errors with the same [RFC 9457](https://www.rfc-editor.org
 | 500 | Unexpected: logged with details, generic message to the client |
 
 The token endpoint follows OAuth2's own error format (RFC 6749 §5.2): `{"error": "invalid_grant", ...}`.
-
----
-
-## Testing
-
-**205 automated tests**, all passing.
-
-| Project | Tests | What they cover |
-|---|---|---|
-| pokedex-api | **90** | Domain rules (`LocalPokemon`, value objects) · use cases with Mockito · PokeAPI adapter against canned payloads (`MockRestServiceServer`) · JPA with real Flyway migrations and optimistic locking · full HTTP stack (`MockMvc` with JWTs: 400/401/403/404/409/415/502) · ArchUnit |
-| pokedex-auth | **34** | Registration rules · `AuthService` (incl. timing-attack mitigation) · JPA unique constraints · token endpoint, JWKS, register over HTTP (the issued token is verified with the published JWKS) · ArchUnit |
-| pokedex-gateway | **40** | Access rules · JWT filter (forged, expired, wrong `iss`/`aud`, missing role, spoofed headers) · error mapping · full gateway on a random port in front of a stub auth server and API that sign real JWTs · CORS · backends down → 503 |
-| pokedex-web | **41** | API client (problem parsing, 401 → sign-out, network errors) · JWT decoding · validation rules mirrored from the backend · components (card, pagination, stats, evolution chain) · edit form (client errors, server 400, 409 reload) |
-
-```bash
-cd pokedex-api     && mvn test        # coverage: target/site/jacoco/index.html
-cd pokedex-auth    && mvn test
-cd pokedex-gateway && mvn test
-cd pokedex-web     && npm test        # + npm run lint, npm run typecheck
-```
-
-End to end: with the stack running, `npx newman run postman/pokedex.postman_collection.json -e postman/local.postman_environment.json`.
 
 ---
 
