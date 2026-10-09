@@ -179,7 +179,7 @@ All through the gateway at `http://localhost:8080`. Full OpenAPI docs: `/swagger
 | POST | `/auth/register` | public | JSON `{username, email, password}`. **201**, 400 (field errors), 409 (taken) |
 | POST | `/oauth2/token` | public | Form `grant_type=password&username=…&password=…`. **200** `{access_token, token_type, expires_in}`; 400 `invalid_grant` / `invalid_request` / `unsupported_grant_type` |
 | GET | `/oauth2/jwks` | public | Public signing keys |
-| GET | `/.well-known/oauth-authorization-server` | public | RFC 8414 metadata |
+| GET | `/.well-known/oauth-authorization-server` | public 
 
 ### Catalog (pokedex-api, read-only, PokeAPI)
 
