@@ -10,9 +10,6 @@ Tool: **Claude Code** (agentic coding assistant in the terminal/IDE).
 
 ## 1. The prompt
 
-A good prompt is a **spec**, not a wish. It states the stack, the architecture, the contract, the rules, the
-edge cases and what "done" means, so the model doesn't have to guess (because it will guess *something*).
-
 ```text
 Create a Spring Boot 3.5 / Java 21 REST API for task management, as a new Maven project "task-api".
 
