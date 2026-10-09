@@ -9,10 +9,6 @@ import org.springframework.context.annotation.Configuration;
 
 import java.time.Clock;
 
-/**
- * Composition root: the application service is plain Java, wired here, so the domain and
- * application layers stay free of Spring.
- */
 @Configuration
 public class UseCaseConfig {
 

@@ -44,10 +44,6 @@ public class LocalPokemonPersistenceAdapter implements LocalPokemonRepositoryPor
                 pageRequest.page(), pageRequest.size(), page.getTotalElements());
     }
 
-    /**
-     * Saves through a detached entity carrying the domain version, so JPA's {@code @Version}
-     * check rejects the write if another request updated the row in between.
-     */
     @Override
     @Transactional
     public LocalPokemon save(LocalPokemon pokemon) {

@@ -22,13 +22,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-/**
- * Implements the catalog port on top of PokeAPI.
- * <p>
- * The PokeAPI list endpoint only returns names, so each page needs two extra calls per
- * Pokemon (pokemon + species). They run in parallel on virtual threads, and each one is
- * cached by {@link PokeApiClient}, so a page that was already seen costs no HTTP calls.
- */
 @Component
 public class PokeApiCatalogAdapter implements PokemonCatalogPort {
 

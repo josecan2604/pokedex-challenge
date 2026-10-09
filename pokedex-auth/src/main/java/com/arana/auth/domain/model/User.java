@@ -8,23 +8,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/**
- * An application user. The password is only ever held as a hash.
- *
- * @param id null until the user is persisted
- */
 public record User(Long id, String username, String email, String passwordHash, Role role, Instant createdAt) {
 
     private static final Pattern USERNAME = Pattern.compile("^[a-z0-9_.-]{3,30}$");
     private static final Pattern EMAIL = Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
     public static final int MIN_PASSWORD_LENGTH = 8;
-    public static final int MAX_PASSWORD_LENGTH = 72; // BCrypt ignores bytes beyond 72
+    public static final int MAX_PASSWORD_LENGTH = 72;
 
-    /**
-     * Validates registration input (already normalized) against the domain rules.
-     *
-     * @throws ValidationException listing every rule that failed
-     */
     public static void validateRegistration(String username, String email, String rawPassword) {
         Map<String, String> errors = new LinkedHashMap<>();
         if (username == null || !USERNAME.matcher(username).matches()) {
@@ -43,7 +33,6 @@ public record User(Long id, String username, String email, String passwordHash, 
         }
     }
 
-    /** Usernames are case-insensitive: "Ash" and "ash" are the same account. */
     public static String normalizeUsername(String username) {
         return username == null ? null : username.trim().toLowerCase(Locale.ROOT);
     }

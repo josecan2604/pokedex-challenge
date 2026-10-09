@@ -5,7 +5,6 @@ interface PaginationProps {
   disabled?: boolean
 }
 
-/** Zero-based page in, one-based page shown to people. */
 export function Pagination({ page, totalPages, onChange, disabled = false }: PaginationProps) {
   if (totalPages <= 1) {
     return null

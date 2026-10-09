@@ -21,7 +21,6 @@ public class AuthService implements RegisterUserUseCase, IssueTokenUseCase {
     private final PasswordHasherPort passwordHasher;
     private final TokenSignerPort tokenSigner;
     private final Clock clock;
-    /** Compared against when the username is unknown, so both failure paths take the same time. */
     private final String dummyHash;
 
     public AuthService(UserRepositoryPort users, PasswordHasherPort passwordHasher,
@@ -57,8 +56,6 @@ public class AuthService implements RegisterUserUseCase, IssueTokenUseCase {
             throw new InvalidCredentialsException();
         }
         Optional<User> user = users.findByUsername(User.normalizeUsername(username));
-        // Always run one BCrypt comparison, even for unknown users: response time must not
-        // reveal whether a username exists.
         boolean passwordMatches = passwordHasher.matches(rawPassword, user.map(User::passwordHash).orElse(dummyHash));
         if (user.isEmpty() || !passwordMatches) {
             throw new InvalidCredentialsException();

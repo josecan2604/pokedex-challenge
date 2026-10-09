@@ -2,10 +2,6 @@ import type { ProblemDetail } from './types'
 
 export const API_BASE_URL: string = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? 'http://localhost:8080'
 
-/**
- * Every non-2xx response becomes an ApiError carrying the status and, when the server
- * sent a problem body, its detail and per-field errors, so forms can show them inline.
- */
 export class ApiError extends Error {
   readonly status: number
   readonly fieldErrors: Record<string, string>
@@ -24,7 +20,6 @@ type UnauthorizedHandler = () => void
 let tokenProvider: TokenProvider = () => null
 let onUnauthorized: UnauthorizedHandler = () => {}
 
-/** Wired once by AuthProvider, so the client stays free of React. */
 export function configureAuth(provider: TokenProvider, unauthorizedHandler: UnauthorizedHandler): void {
   tokenProvider = provider
   onUnauthorized = unauthorizedHandler
@@ -62,7 +57,6 @@ export async function apiFetch<T>(path: string, { method = 'GET', body, signal }
   }
 
   if (response.status === 401 && token) {
-    // Token expired or the gateway restarted with a new key: drop the session.
     onUnauthorized()
   }
   if (!response.ok) {
@@ -75,11 +69,11 @@ export async function apiFetch<T>(path: string, { method = 'GET', body, signal }
 }
 
 export async function toApiError(response: Response): Promise<ApiError> {
-  let problem: ProblemDetail = {}
+  let problem: ProblemDetail
   try {
     problem = (await response.json()) as ProblemDetail
   } catch {
-    // Not JSON (e.g. a proxy error page): fall back to the status text.
+    problem = {}
   }
   return new ApiError(response.status, problem.detail ?? defaultMessage(response.status), problem.errors ?? {})
 }

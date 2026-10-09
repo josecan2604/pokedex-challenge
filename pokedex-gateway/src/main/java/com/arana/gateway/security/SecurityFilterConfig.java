@@ -19,9 +19,6 @@ public class SecurityFilterConfig {
     @Bean
     JwtAuthenticationFilter jwtAuthenticationFilter(GatewayAuthProperties properties) {
         AccessRules rules = new AccessRules(properties.rules());
-        // Built on first use, so the gateway starts even if pokedex-auth is not up yet.
-        // The decoder caches the key set after the first fetch and refetches it when a token
-        // carries an unknown key id (key rotation, or pokedex-auth restarted with a new key).
         SingletonSupplier<ReactiveJwtDecoder> decoder = SingletonSupplier.of(() -> jwtDecoder(properties));
         return new JwtAuthenticationFilter(rules, decoder);
     }
@@ -32,9 +29,6 @@ public class SecurityFilterConfig {
         return decoder;
     }
 
-    /**
-     * Default validators (exp, nbf with 60s clock skew) plus issuer and audience.
-     */
     public static OAuth2TokenValidator<Jwt> validator(GatewayAuthProperties properties) {
         OAuth2TokenValidator<Jwt> audience = jwt -> jwt.getAudience() != null && jwt.getAudience().contains(properties.audience())
                 ? OAuth2TokenValidatorResult.success()

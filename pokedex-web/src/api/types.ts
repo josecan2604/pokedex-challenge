@@ -1,5 +1,3 @@
-/** Mirrors the backend DTOs. Kept in one place so a contract change is a one-file edit. */
-
 export interface Page<T> {
   content: T[]
   page: number
@@ -87,7 +85,6 @@ export interface RegisteredUser {
   createdAt: string
 }
 
-/** RFC 9457 problem body returned by the gateway and the API. */
 export interface ProblemDetail {
   title?: string
   status?: number
@@ -96,7 +93,6 @@ export interface ProblemDetail {
   errors?: Record<string, string>
 }
 
-/** RFC 6749 token response (success or error). */
 export interface TokenResponse {
   access_token?: string
   token_type?: string

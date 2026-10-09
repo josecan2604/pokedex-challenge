@@ -1,8 +1,3 @@
-# Full stack: docker compose up --build
-#   Frontend  http://localhost:3000
-#   Gateway   http://localhost:8080   (the only backend entry point for clients)
-# pokedex-auth and pokedex-api are only reachable inside the compose network.
-
 services:
   postgres:
     image: postgres:16-alpine
@@ -27,7 +22,6 @@ services:
       DB_NAME: pokedex_auth
       DB_USER: pokedex
       DB_PASSWORD: pokedex
-      # "iss" claim: the public URL clients reach the auth server at (through the gateway)
       JWT_ISSUER: http://localhost:8080
       JWT_AUDIENCE: pokedex-api
     depends_on:

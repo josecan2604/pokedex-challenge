@@ -5,10 +5,6 @@ import com.arana.pokedex.domain.exception.ValidationException;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-/**
- * A Pokedex number or a PokeAPI name ("25" or "pikachu"), validated before it is
- * used to build an upstream URL.
- */
 public record PokemonIdentifier(String value) {
 
     private static final Pattern VALID = Pattern.compile("^[a-z0-9][a-z0-9-]{0,49}$");

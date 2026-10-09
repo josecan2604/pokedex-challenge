@@ -8,14 +8,6 @@ import com.tngtech.archunit.lang.ArchRule;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
-/**
- * Enforces the dependency rule: source code dependencies only point inwards.
- * <pre>
- *   infrastructure (web, persistence, pokeapi, security, config)
- *        -> application (use cases, ports)
- *             -> domain (models, rules)
- * </pre>
- */
 @AnalyzeClasses(packages = "com.arana.pokedex", importOptions = ImportOption.DoNotIncludeTests.class)
 class CleanArchitectureTest {
 

@@ -13,11 +13,6 @@ import {
 import { Field } from './Field'
 import { Notice } from './Status'
 
-/**
- * US04 edit form. Validates on the client for instant feedback, shows the server's
- * field errors (400) in the same place, and handles a concurrent edit (409) by
- * offering to reload the latest version.
- */
 export function LocalPokemonForm({ pokemon, onReload }: { pokemon: LocalPokemon; onReload: () => void }) {
   const [form, setForm] = useState<CustomFieldsForm>(() => ({
     localizedName: pokemon.localizedName ?? '',

@@ -29,14 +29,6 @@ import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Translates every exception into an RFC 9457 ProblemDetail, so clients always get
- * the same shape: {type, title, status, detail, instance, timestamp, errors?}.
- * <p>
- * 400 malformed JSON, bad types or broken rules · 404 missing ·
- * 409 stale versions · 502 PokeAPI failure · 500 anything unexpected
- * (logged, never leaked to the client).
- */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -86,7 +78,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return problem(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred", request);
     }
 
-    /** {@code @Valid} body failures: one entry per invalid field. */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(@NonNull MethodArgumentNotValidException e,
                                                                   @NonNull HttpHeaders headers,
@@ -113,7 +104,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body(problem);
     }
 
-    /** Unparseable JSON, wrong JSON types or a missing body. */
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(@NonNull HttpMessageNotReadableException e,
                                                                   @NonNull HttpHeaders headers,
@@ -123,7 +113,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(problem(HttpStatus.BAD_REQUEST, "The request body is missing or is not valid JSON", request));
     }
 
-    /** Adds the timestamp and instance to Spring's own ProblemDetails (405, 415, ...). */
     @Override
     protected ResponseEntity<Object> createResponseEntity(Object body, @NonNull HttpHeaders headers,
                                                           @NonNull HttpStatusCode statusCode, @NonNull WebRequest request) {

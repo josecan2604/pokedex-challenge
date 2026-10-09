@@ -14,10 +14,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.time.Instant;
 
-/**
- * Makes 401 and 403 responses use the same ProblemDetail body as every other error,
- * while keeping the RFC 6750 {@code WWW-Authenticate} header from Spring's bearer handlers.
- */
 public final class ProblemDetailAuthHandlers {
 
     private ProblemDetailAuthHandlers() {

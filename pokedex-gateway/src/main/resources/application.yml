@@ -15,12 +15,10 @@ spring:
           default-filters:
             - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
           routes:
-            # Identity: registration, token endpoint, signing keys -> pokedex-auth
             - id: pokedex-auth
               uri: ${AUTH_URL:http://localhost:8082}
               predicates:
                 - Path=/oauth2/**,/auth/**,/.well-known/**
-            # Resources -> pokedex-api
             - id: pokedex-api
               uri: ${API_URL:http://localhost:8081}
               predicates:
@@ -40,12 +38,9 @@ spring:
 
 gateway:
   auth:
-    # The gateway only VALIDATES tokens. They are issued by pokedex-auth; point these three
-    # values at any other authorization server or IdP (e.g. Keycloak) and nothing else changes.
     issuer: ${JWT_ISSUER:http://localhost:8080}
     audience: ${JWT_AUDIENCE:pokedex-api}
     jwks-uri: ${JWT_JWKS_URI:${AUTH_URL:http://localhost:8082}/oauth2/jwks}
-    # First match wins. Unmatched routed paths require a valid token.
     rules:
       - { method: OPTIONS, path: /**, access: PUBLIC }
       - { path: /oauth2/**, access: PUBLIC }

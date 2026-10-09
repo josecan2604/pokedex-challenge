@@ -4,10 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
-/**
- * Wire format of the PokeAPI v2 endpoints we use. Only the fields we read are mapped;
- * unknown properties are ignored (Spring Boot's default ObjectMapper setting).
- */
 public final class PokeApiDtos {
 
     private PokeApiDtos() {
@@ -16,11 +12,9 @@ public final class PokeApiDtos {
     public record NamedResource(String name, String url) {
     }
 
-    /** GET /pokemon?offset=&limit= */
     public record PokemonListResponse(int count, List<NamedResource> results) {
     }
 
-    /** GET /pokemon/{idOrName} */
     public record PokemonResponse(
             int id,
             String name,
@@ -51,7 +45,6 @@ public final class PokeApiDtos {
     public record StatEntry(@JsonProperty("base_stat") int baseStat, NamedResource stat) {
     }
 
-    /** GET /pokemon-species/{id} */
     public record SpeciesResponse(
             int id,
             String name,
@@ -69,7 +62,6 @@ public final class PokeApiDtos {
     public record ApiResource(String url) {
     }
 
-    /** GET /evolution-chain/{id} */
     public record EvolutionChainResponse(int id, ChainLink chain) {
     }
 

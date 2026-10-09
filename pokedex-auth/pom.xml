@@ -41,8 +41,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- BCrypt and JWT signing only. Every endpoint here is public by design (register,
-             token, JWKS), so Spring Security's web filter chain is deliberately not included. -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-crypto</artifactId>

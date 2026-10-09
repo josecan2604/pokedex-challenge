@@ -1,6 +1,3 @@
--- Demo data: a few Pokemon already replicated, some with custom fields filled in.
--- Users and demo accounts live in pokedex-auth.
-
 INSERT INTO local_pokemon (id, name, sprite_url, category, weight_kg, height_m, types, abilities,
                            localized_name, region, notes, row_version, synced_at, updated_at)
 VALUES

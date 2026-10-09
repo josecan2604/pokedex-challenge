@@ -12,9 +12,6 @@ import com.arana.pokedex.domain.model.PokemonSummary;
 
 import java.util.Objects;
 
-/**
- * User Stories 01 and 02: read-only views over the external catalog.
- */
 public class PokemonCatalogService implements BrowsePokemonUseCase, GetPokemonDetailUseCase {
 
     private final PokemonCatalogPort catalog;

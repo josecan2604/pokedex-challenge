@@ -29,11 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Full stack (security, controllers, services, JPA on H2 with seed data). Only PokeAPI is mocked.
- * Tokens are simulated with spring-security-test's {@code jwt()}; real signature checks are
- * covered by the gateway tests.
- */
 @SpringBootTest
 @AutoConfigureMockMvc
 class LocalPokemonApiIntegrationTest {

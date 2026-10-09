@@ -17,12 +17,6 @@ import org.springframework.web.client.RestClientException;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-/**
- * Thin HTTP client for PokeAPI. Every call is cached (Caffeine, see application.yml):
- * PokeAPI data is effectively static, and PokeAPI's fair-use policy asks clients to cache.
- * <p>
- * A 404 becomes an empty Optional; any other failure becomes {@link ExternalServiceException}.
- */
 @Component
 public class PokeApiClient {
 

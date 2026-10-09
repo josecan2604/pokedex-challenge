@@ -36,10 +36,6 @@ public class UserPersistenceAdapter implements UserRepositoryPort {
         return repository.existsByEmail(email);
     }
 
-    /**
-     * The unique constraints are the real guard against two concurrent registrations with the
-     * same username; the service's exists-checks only produce friendlier messages.
-     */
     @Override
     @Transactional
     public User save(User user) {

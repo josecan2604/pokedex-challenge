@@ -15,12 +15,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.IntStream;
 
-/**
- * User Story 03: copy Pokemon from the catalog into the local store.
- * <p>
- * Sync is an upsert: a new Pokemon is created with empty custom fields, while an
- * existing one gets its catalog fields refreshed and keeps its custom fields.
- */
 public class PokemonSyncService implements SyncPokemonUseCase {
 
     private final PokemonCatalogPort catalog;
@@ -52,7 +46,6 @@ public class PokemonSyncService implements SyncPokemonUseCase {
             throw new ValidationException("toId", "a range can contain at most " + MAX_RANGE + " Pokemon");
         }
 
-        // Fetch everything first, so an unknown id fails the whole request before anything is written.
         List<PokemonDetail> details = IntStream.rangeClosed(fromId, toId)
                 .mapToObj(PokemonIdentifier::of)
                 .map(id -> catalog.findDetail(id).orElseThrow(() -> new ResourceNotFoundException("Pokemon", id)))

@@ -40,8 +40,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
         </dependency>
-        <!-- JWT signing (NimbusJwtEncoder) and JWKS-based validation (NimbusReactiveJwtDecoder),
-             without pulling in Spring Security's web filter chain: validation is our own GlobalFilter. -->
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-oauth2-jose</artifactId>

@@ -15,15 +15,6 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Signs RS256 JWTs. Claims:
- * <pre>
- *   iss   issuer (public URL of this server)       sub   username
- *   aud   ["pokedex-api"]                           uid   user id
- *   iat / nbf / exp                                 roles ["USER"] or ["ADMIN"]
- *   jti   unique token id
- * </pre>
- */
 @Component
 public class JwtTokenSigner implements TokenSignerPort {
 

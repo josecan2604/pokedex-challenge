@@ -26,14 +26,6 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.util.UUID;
 
-/**
- * The RS256 key pair tokens are signed with. Only the public half is ever published (JWKS).
- * <p>
- * In production the pair comes from PEM files (mounted secrets), so every replica signs with the
- * same key. Without them a fresh pair is generated at startup: fine for local development, but
- * tokens issued before a restart stop validating. Resource servers pick up a new key on their
- * own: their JWKS cache refetches when a token carries an unknown key id.
- */
 @Configuration
 public class SigningKeyConfig {
 

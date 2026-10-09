@@ -8,7 +8,6 @@ import { usePageParam } from '../hooks/usePageParam'
 
 const PAGE_SIZE = 24
 
-/** US01: paginated catalog with sprite, category, weight and abilities. */
 export function BrowsePage() {
   const [page, setPage] = usePageParam()
   const { data, isPending, isError, error, refetch, isPlaceholderData } = useCatalogPage(page, PAGE_SIZE)

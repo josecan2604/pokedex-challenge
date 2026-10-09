@@ -2,15 +2,9 @@ export interface Session {
   token: string
   username: string
   roles: string[]
-  /** Expiry, epoch milliseconds. */
   expiresAt: number
 }
 
-/**
- * Reads the claims the UI needs. This does NOT verify the signature: the browser has
- * no reason to trust itself. The gateway and the API verify every request; the UI only
- * uses the claims to decide what to show.
- */
 export function sessionFromToken(token: string): Session | null {
   const parts = token.split('.')
   if (parts.length !== 3) {

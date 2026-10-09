@@ -7,8 +7,6 @@ server:
 spring:
   application:
     name: pokedex-auth
-  # Default: in-memory H2 in PostgreSQL mode (zero setup). The "postgres" profile uses its own
-  # database: this service is the only one that reads or writes users.
   datasource:
     url: jdbc:h2:mem:pokedex_auth;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH;DB_CLOSE_DELAY=-1
     username: sa
@@ -24,7 +22,6 @@ spring:
 
 auth:
   token:
-    # Public URL of this server as clients see it (through the gateway). Goes into "iss".
     issuer: ${JWT_ISSUER:http://localhost:8080}
     audience: ${JWT_AUDIENCE:pokedex-api}
     token-ttl: ${JWT_TTL:1h}

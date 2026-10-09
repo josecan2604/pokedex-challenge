@@ -17,9 +17,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * The primary key is the Pokedex number, so a Pokemon can only be replicated once.
- */
 @Entity
 @Table(name = "local_pokemon")
 public class LocalPokemonEntity {

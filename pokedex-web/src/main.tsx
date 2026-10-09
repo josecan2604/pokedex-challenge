@@ -10,7 +10,6 @@ import './index.css'
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      // Retry transient failures (network, 5xx) but never client errors like 404.
       retry: (failureCount, error) =>
         failureCount < 2 && !(error instanceof ApiError && error.status >= 400 && error.status < 500),
       refetchOnWindowFocus: false,

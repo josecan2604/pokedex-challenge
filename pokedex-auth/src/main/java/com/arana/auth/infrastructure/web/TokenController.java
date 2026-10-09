@@ -19,18 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * OAuth2 token endpoint (RFC 6749 section 4.3, Resource Owner Password Credentials grant).
- * <p>
- * Errors follow RFC 6749 section 5.2 rather than ProblemDetail, because OAuth clients expect
- * {@code {"error": "...", "error_description": "..."}}: {@code invalid_request},
- * {@code unsupported_grant_type} or {@code invalid_grant}, all with HTTP 400.
- * <p>
- * The password grant is deprecated in OAuth 2.1. It is used because the SPA is a first-party
- * client with its own login form. The production path is Authorization Code + PKCE (this
- * server, Spring Authorization Server, or an IdP such as Keycloak); the gateway and the API
- * would not change, since they only depend on the JWKS, the issuer and the audience.
- */
 @RestController
 @Tag(name = "OAuth2", description = "Token endpoint and signing keys")
 public class TokenController {
@@ -65,7 +53,6 @@ public class TokenController {
         try {
             AccessToken token = issueToken.issueForCredentials(username, password);
             log.info("Issued access token for '{}'", username.trim().toLowerCase());
-            // RFC 6749 section 5.1: token responses must not be cached.
             return ResponseEntity.ok()
                     .cacheControl(CacheControl.noStore())
                     .header("Pragma", "no-cache")

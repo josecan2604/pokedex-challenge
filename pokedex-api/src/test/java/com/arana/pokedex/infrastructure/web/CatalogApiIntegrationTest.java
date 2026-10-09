@@ -74,7 +74,6 @@ class CatalogApiIntegrationTest {
 
     @Test
     void userEndpointsNoLongerExistHere() throws Exception {
-        // Users moved to pokedex-auth: these paths are unknown to the resource server.
         mvc.perform(post("/api/auth/register")).andExpect(status().isUnauthorized());
         mvc.perform(post("/internal/auth/verify")).andExpect(status().isUnauthorized());
     }

@@ -24,10 +24,6 @@ import java.time.Instant;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * RFC 9457 ProblemDetail for every non-OAuth error, the same shape the API and the gateway use:
- * 400 invalid input or malformed JSON · 409 username/email taken · 500 unexpected (logged, hidden).
- */
 @RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
@@ -69,7 +65,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .body(problem(HttpStatus.BAD_REQUEST, "The request body is missing or is not valid JSON", path(request)));
     }
 
-    /** Adds the timestamp and instance to Spring's own ProblemDetails (405, 415...). */
     @Override
     protected ResponseEntity<Object> createResponseEntity(Object body, @NonNull HttpHeaders headers,
                                                           @NonNull HttpStatusCode statusCode, @NonNull WebRequest request) {

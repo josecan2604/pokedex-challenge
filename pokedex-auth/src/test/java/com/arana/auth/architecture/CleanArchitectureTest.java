@@ -8,9 +8,6 @@ import com.tngtech.archunit.lang.ArchRule;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
-/**
- * Same dependency rule as pokedex-api: infrastructure -> application -> domain.
- */
 @AnalyzeClasses(packages = "com.arana.auth", importOptions = ImportOption.DoNotIncludeTests.class)
 class CleanArchitectureTest {
 

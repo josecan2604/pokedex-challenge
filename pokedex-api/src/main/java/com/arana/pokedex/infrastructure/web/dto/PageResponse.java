@@ -5,9 +5,6 @@ import com.arana.pokedex.domain.model.PageResult;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * The single page envelope every paginated endpoint returns.
- */
 public record PageResponse<T>(List<T> content, int page, int size, long totalElements, int totalPages,
                               boolean first, boolean last) {
 

@@ -11,9 +11,6 @@ public final class SyncRequests {
     private SyncRequests() {
     }
 
-    /**
-     * @param idOrName Pokedex number or PokeAPI name, e.g. "25" or "pikachu"
-     */
     public record SyncOneRequest(@NotBlank String idOrName) {
     }
 

@@ -2,9 +2,6 @@ package com.arana.pokedex.domain.model;
 
 import com.arana.pokedex.domain.exception.ValidationException;
 
-/**
- * Validated, zero-based pagination request.
- */
 public record PageRequest(int page, int size) {
 
     public static final int MAX_SIZE = 50;

@@ -11,14 +11,6 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-/**
- * User Stories 03 and 04: a Pokemon replicated into the local store.
- * <p>
- * Fields copied from PokeAPI are refreshed on every sync. The proprietary fields
- * (localized name, region, tags, notes) belong to us: a sync never overwrites them,
- * and they can only change through {@link #updateCustomFields(CustomFields, Instant)}, which
- * enforces the business rules.
- */
 public final class LocalPokemon {
 
     public static final int MAX_LOCALIZED_NAME_LENGTH = 100;
@@ -53,9 +45,6 @@ public final class LocalPokemon {
         this.tags = new LinkedHashSet<>();
     }
 
-    /**
-     * Creates a new local record from PokeAPI data, with empty custom fields.
-     */
     public static LocalPokemon fromCatalog(PokemonDetail detail, Instant now) {
         LocalPokemon pokemon = new LocalPokemon(detail.id());
         pokemon.refreshFromCatalog(detail, now);
@@ -63,9 +52,6 @@ public final class LocalPokemon {
         return pokemon;
     }
 
-    /**
-     * Rebuilds an existing record from storage. Used only by persistence adapters.
-     */
     public static LocalPokemon restore(int id, String name, String spriteUrl, String category,
                                        double weightKg, double heightM, List<String> types,
                                        List<String> abilities, CustomFields customFields,
@@ -88,9 +74,6 @@ public final class LocalPokemon {
         return pokemon;
     }
 
-    /**
-     * Copies the PokeAPI-owned fields, leaving the custom fields untouched.
-     */
     public void refreshFromCatalog(PokemonDetail detail, Instant now) {
         if (detail.id() != id) {
             throw new ValidationException("id", "catalog data belongs to Pokemon #" + detail.id() + ", not #" + id);
@@ -105,12 +88,6 @@ public final class LocalPokemon {
         this.syncedAt = now;
     }
 
-    /**
-     * Replaces the proprietary fields after validating and normalizing them.
-     * Blank strings are stored as null; tags are trimmed, lower-cased and de-duplicated.
-     *
-     * @throws ValidationException listing every rule that failed
-     */
     public void updateCustomFields(CustomFields fields, Instant now) {
         Map<String, String> errors = new LinkedHashMap<>();
 
@@ -195,9 +172,6 @@ public final class LocalPokemon {
         return Objects.hash(id);
     }
 
-    /**
-     * The proprietary, user-editable fields.
-     */
     public record CustomFields(String localizedName, String region, List<String> tags, String notes) {
 
         public static final CustomFields EMPTY = new CustomFields(null, null, List.of(), null);

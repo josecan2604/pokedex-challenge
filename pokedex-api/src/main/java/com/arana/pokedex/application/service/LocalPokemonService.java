@@ -11,9 +11,6 @@ import com.arana.pokedex.domain.model.PageResult;
 import java.time.Clock;
 import java.util.Objects;
 
-/**
- * User Story 04: read, update and delete Pokemon in the local store.
- */
 public class LocalPokemonService implements ManageLocalPokemonUseCase {
 
     private static final String RESOURCE = "Local Pokemon";

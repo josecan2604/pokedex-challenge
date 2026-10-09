@@ -16,11 +16,6 @@ export interface AuthState {
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext<AuthState | null>(null)
 
-/**
- * The token is kept in sessionStorage: it survives a page reload but not closing the tab,
- * a reasonable trade-off for a bearer token in a SPA. (An httpOnly cookie set by a BFF
- * would be stronger against XSS; see README.)
- */
 function readStoredSession(): Session | null {
   try {
     const token = sessionStorage.getItem(STORAGE_KEY)
@@ -39,7 +34,7 @@ function storeToken(token: string | null): void {
       sessionStorage.removeItem(STORAGE_KEY)
     }
   } catch {
-    // Storage unavailable (private mode): the session just won't survive a reload.
+    return
   }
 }
 
@@ -54,12 +49,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setSession(null)
   }, [])
 
-  // The API client reads the token at request time and reports 401s back here.
   useEffect(() => {
     configureAuth(() => sessionRef.current?.token ?? null, logout)
   }, [logout])
 
-  // Sign out exactly when the token expires, instead of waiting for a failed request.
   useEffect(() => {
     if (!session) {
       return
@@ -77,7 +70,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     storeToken(token)
     sessionRef.current = next
     setSession(next)
-    // Cached data may depend on who is signed in.
     await queryClient.invalidateQueries()
   }, [queryClient])
 

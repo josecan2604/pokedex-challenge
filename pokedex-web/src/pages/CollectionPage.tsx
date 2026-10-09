@@ -12,7 +12,6 @@ import { formatName } from '../utils/format'
 const PAGE_SIZE = 12
 const MAX_RANGE = 50
 
-/** The local replica: search, browse, and (when signed in) sync from PokeAPI (US03). */
 export function CollectionPage() {
   const { session } = useAuth()
   const [params, setParams] = useSearchParams()

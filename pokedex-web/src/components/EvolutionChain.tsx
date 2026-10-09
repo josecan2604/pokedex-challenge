@@ -2,10 +2,6 @@ import { Link } from 'react-router-dom'
 import type { EvolutionStage } from '../api/types'
 import { formatName } from '../utils/format'
 
-/**
- * Renders the lineage as columns of stages. Branching evolutions (Eevee) put
- * several Pokemon in the same column.
- */
 export function EvolutionChain({ chain, currentId }: { chain: EvolutionStage[]; currentId: number }) {
   if (chain.length <= 1) {
     return <p className="muted">This Pokémon does not evolve.</p>

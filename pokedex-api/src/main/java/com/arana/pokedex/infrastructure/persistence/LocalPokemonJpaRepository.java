@@ -9,9 +9,6 @@ import org.springframework.data.repository.query.Param;
 
 interface LocalPokemonJpaRepository extends JpaRepository<LocalPokemonEntity, Integer> {
 
-    /**
-     * Case-insensitive match on name or localized name, or an exact tag match.
-     */
     @Query(value = """
             SELECT p FROM LocalPokemonEntity p
             WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%'))

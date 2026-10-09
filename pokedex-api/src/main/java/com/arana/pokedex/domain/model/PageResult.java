@@ -3,9 +3,6 @@ package com.arana.pokedex.domain.model;
 import java.util.List;
 import java.util.function.Function;
 
-/**
- * Framework-independent page of results. Pages are zero-based.
- */
 public record PageResult<T>(List<T> content, int page, int size, long totalElements) {
 
     public PageResult {

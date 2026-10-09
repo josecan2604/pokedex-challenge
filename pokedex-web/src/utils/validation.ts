@@ -1,9 +1,5 @@
 import type { CustomFields } from '../api/types'
 
-/**
- * Client-side copy of the domain rules in LocalPokemon.java, for instant feedback.
- * The server stays the source of truth: its 400 field errors are shown the same way.
- */
 export const LIMITS = {
   localizedName: 100,
   region: 50,
@@ -23,7 +19,6 @@ export interface CustomFieldsForm {
 
 export type FieldErrors = Partial<Record<keyof CustomFieldsForm, string>>
 
-/** "Starter, gen-1, starter" -> ["starter", "gen-1"] */
 export function parseTags(input: string): string[] {
   const tags = input
     .split(',')

@@ -10,10 +10,6 @@ import reactor.core.publisher.Mono;
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 
-/**
- * Writes RFC 9457 problem bodies with the same shape the resource server uses,
- * so the frontend handles gateway and API errors the same way.
- */
 public final class ProblemResponses {
 
     private ProblemResponses() {

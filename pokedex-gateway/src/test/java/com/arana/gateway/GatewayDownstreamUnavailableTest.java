@@ -8,10 +8,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.reactive.function.BodyInserters;
 
-/**
- * pokedex-auth and pokedex-api are both down (nothing listens on port 1): the gateway must
- * answer 503 problem+json instead of a generic 500.
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
         properties = {"API_URL=http://localhost:1", "AUTH_URL=http://localhost:1"})
 class GatewayDownstreamUnavailableTest {
@@ -38,7 +34,6 @@ class GatewayDownstreamUnavailableTest {
 
     @Test
     void tokensCannotBeValidatedWhileTheAuthServerIsDown() {
-        // No JWKS cached yet and the auth server is unreachable: a token cannot be checked.
         client.put().uri("/api/local-pokemon/1")
                 .header(HttpHeaders.AUTHORIZATION, "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IngifQ.eyJzdWIiOiJhc2gifQ.c2ln")
                 .contentType(MediaType.APPLICATION_JSON).bodyValue("{}")

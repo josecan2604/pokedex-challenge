@@ -20,11 +20,6 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
-/**
- * This service is an OAuth2 resource server. pokedex-auth issues the JWTs (RS256)
- * and publishes its public keys as a JWKS; we fetch and cache those keys and validate
- * every token locally, so a request that bypasses the gateway is still checked.
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -34,8 +29,8 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http, ObjectMapper mapper) throws Exception {
         return http
-                .csrf(csrf -> csrf.disable()) // stateless bearer-token API, no cookies
-                .cors(cors -> cors.disable()) // CORS is handled once, at the gateway
+                .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.disable())
                 .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/health/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
@@ -53,10 +48,6 @@ public class SecurityConfig {
                 .build();
     }
 
-    /**
-     * Fetches pokedex-auth's JWKS lazily (on the first protected request) and caches it,
-     * so this service can start before pokedex-auth does.
-     */
     @Bean
     JwtDecoder jwtDecoder(@Value("${security.jwt.jwk-set-uri}") String jwkSetUri,
                           @Value("${security.jwt.issuer}") String issuer,
@@ -70,9 +61,6 @@ public class SecurityConfig {
         return decoder;
     }
 
-    /**
-     * Maps the {@code roles} claim (["USER"]) to Spring authorities (ROLE_USER).
-     */
     static JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter authorities = new JwtGrantedAuthoritiesConverter();
         authorities.setAuthoritiesClaimName(ROLES_CLAIM);

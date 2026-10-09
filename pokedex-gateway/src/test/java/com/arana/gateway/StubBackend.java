@@ -23,12 +23,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * Plays both pokedex-auth (token endpoint, JWKS, register) and pokedex-api (/api/**) on the JDK's
- * HTTP server, so gateway tests need no extra dependency. Tokens are real RS256 JWTs signed with
- * a key published on /oauth2/jwks, exactly like the real authorization server.
- * Records the headers of the last /api call so tests can assert what the gateway forwarded.
- */
 public final class StubBackend implements AutoCloseable {
 
     static final String ISSUER = "http://localhost:8080";

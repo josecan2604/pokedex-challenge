@@ -1,7 +1,3 @@
--- Works on PostgreSQL and on H2 in PostgreSQL mode.
--- Users are not stored here: pokedex-auth owns them.
-
--- Primary key is the Pokedex number: a Pokemon can be replicated only once.
 CREATE TABLE local_pokemon (
     id             INTEGER          NOT NULL PRIMARY KEY,
     name           VARCHAR(100)     NOT NULL,
@@ -11,7 +7,6 @@ CREATE TABLE local_pokemon (
     height_m       DOUBLE PRECISION NOT NULL,
     types          VARCHAR(200)     NOT NULL,
     abilities      VARCHAR(500)     NOT NULL,
-    -- proprietary fields (User Story 03)
     localized_name VARCHAR(100),
     region         VARCHAR(50),
     notes          VARCHAR(500),

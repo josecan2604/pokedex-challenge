@@ -32,14 +32,12 @@ public class RegistrationController {
         return UserResponse.from(registerUser.register(request.username(), request.email(), request.password()));
     }
 
-    /** Shape checks only; the domain enforces the actual rules. */
     public record RegisterRequest(
             @NotBlank @Size(max = 30) String username,
             @NotBlank @Size(max = 254) String email,
             @NotBlank @Size(max = 72) String password) {
     }
 
-    /** Never exposes the password hash. */
     public record UserResponse(long id, String username, String email, String role, Instant createdAt) {
 
         static UserResponse from(User user) {

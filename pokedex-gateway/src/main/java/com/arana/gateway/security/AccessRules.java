@@ -9,10 +9,6 @@ import org.springframework.web.util.pattern.PathPatternParser;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Decides what a request needs, from the ordered rules in {@code gateway.auth.rules}.
- * The first matching rule wins; anything unmatched requires authentication (secure by default).
- */
 public class AccessRules {
 
     public sealed interface Requirement {

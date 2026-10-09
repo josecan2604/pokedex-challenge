@@ -6,10 +6,6 @@
 ### Flow: client -> gateway (:8080) -> pokedex-auth (:8082) for /oauth2/** and /auth/**
 ###                                  -> pokedex-api  (:8081) for /api/**
 
-###############################################################################
-# 1. Identity, routed to pokedex-auth
-###############################################################################
-
 ### 1.1 JWKS: public keys the gateway and the API validate tokens with
 GET {{gateway}}/oauth2/jwks
 
@@ -33,10 +29,6 @@ POST {{gateway}}/auth/register
 Content-Type: application/json
 
 { "username": "ash", "email": "someone@pokedex.local", "password": "Pikachu123" }
-
-###############################################################################
-# 2. Token endpoint (password grant), routed to pokedex-auth
-###############################################################################
 
 ### 2.1 Login as USER (ash) -> stores userToken
 POST {{gateway}}/oauth2/token
@@ -78,10 +70,6 @@ Content-Type: application/x-www-form-urlencoded
 
 grant_type=password&username=ash
 
-###############################################################################
-# 3. Edge JWT validation at the gateway (JwtAuthenticationFilter)
-###############################################################################
-
 ### 3.1 Public route, no token -> 200 (forwarded to the API)
 GET {{gateway}}/api/pokemon?page=0&size=5
 
@@ -122,10 +110,6 @@ Authorization: Bearer {{userToken}}
 X-User-Name: admin
 X-User-Roles: ADMIN
 
-###############################################################################
-# 4. Routing and status code mapping
-###############################################################################
-
 ### 4.1 Downstream status passes through unchanged -> 404 from the API
 GET {{gateway}}/api/local-pokemon/9999
 
@@ -150,10 +134,6 @@ POST {{gateway}}/oauth2/token
 Content-Type: application/x-www-form-urlencoded
 
 grant_type=password&username=ash&password=Pikachu123
-
-###############################################################################
-# 5. Defense in depth: calling the API directly, bypassing the gateway
-###############################################################################
 
 ### 5.1 Forged token straight to the API -> 401 (the resource server validates too)
 PUT {{api}}/api/local-pokemon/25

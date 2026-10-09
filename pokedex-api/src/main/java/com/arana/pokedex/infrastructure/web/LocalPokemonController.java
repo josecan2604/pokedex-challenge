@@ -30,11 +30,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
-/**
- * CRUD over the local replica (User Stories 03 and 04).
- * Create is "sync from PokeAPI": a local record always mirrors a real Pokemon.
- * Reads are public; sync and update need USER; delete needs ADMIN.
- */
 @RestController
 @RequestMapping("/api/local-pokemon")
 @Tag(name = "Local Pokemon", description = "Replicated Pokemon with proprietary fields")

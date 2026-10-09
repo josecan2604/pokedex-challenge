@@ -6,10 +6,6 @@ import jakarta.persistence.Converter;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Stores a short list of PokeAPI slugs (types, abilities) as a comma-separated column.
- * Slugs never contain commas, and these lists are read-only copies we never query by.
- */
 @Converter
 public class StringListConverter implements AttributeConverter<List<String>, String> {
 

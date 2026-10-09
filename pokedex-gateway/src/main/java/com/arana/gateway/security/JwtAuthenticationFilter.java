@@ -22,19 +22,6 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.function.Supplier;
 
-/**
- * Edge authentication for every routed request.
- * <ol>
- *   <li>Looks up what the route needs ({@link AccessRules}).</li>
- *   <li>Validates the Bearer token <em>locally</em>: signature against the cached JWKS keys,
- *       then issuer, audience, expiry and not-before. No call to the issuer per request.</li>
- *   <li>Checks the role, then forwards to the resource server with the original
- *       {@code Authorization} header plus {@code X-User-Name} / {@code X-User-Roles}.</li>
- * </ol>
- * Responses: 401 for a missing, malformed, expired or wrongly signed token; 403 for a valid
- * token without the role; 503 when the signing keys cannot be fetched. All use RFC 6750
- * {@code WWW-Authenticate} headers and an RFC 9457 problem body.
- */
 public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
 
     public static final String USER_HEADER = "X-User-Name";
@@ -48,9 +35,6 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
     private final AccessRules accessRules;
     private final Supplier<ReactiveJwtDecoder> decoder;
 
-    /**
-     * @param decoder supplied lazily, so the JWKS URI can point at this gateway's own port
-     */
     public JwtAuthenticationFilter(AccessRules accessRules, Supplier<ReactiveJwtDecoder> decoder) {
         this.accessRules = accessRules;
         this.decoder = decoder;
@@ -103,9 +87,6 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         return chain.filter(exchange.mutate().request(forwarded).build());
     }
 
-    /**
-     * Clients must never be able to set identity headers themselves.
-     */
     private static ServerHttpRequest withoutSpoofedIdentity(ServerHttpRequest request) {
         if (!request.getHeaders().containsKey(USER_HEADER) && !request.getHeaders().containsKey(ROLES_HEADER)) {
             return request;

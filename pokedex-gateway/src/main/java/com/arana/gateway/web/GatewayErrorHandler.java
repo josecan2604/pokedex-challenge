@@ -17,20 +17,8 @@ import java.net.ConnectException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeoutException;
 
-/**
- * Maps failures that happen <em>at the gateway</em> (no route, downstream unreachable,
- * downstream too slow) to meaningful statuses instead of a generic 500:
- * <pre>
- *   no route / unknown path        -> 404 Not Found
- *   downstream refused / DNS fail  -> 503 Service Unavailable
- *   downstream timed out           -> 504 Gateway Timeout
- *   other ResponseStatusException  -> its own status
- *   anything else                  -> 500 (logged, details hidden)
- * </pre>
- * Statuses returned <em>by</em> the resource server (400, 404, 409, 502...) pass through unchanged.
- */
 @Component
-@Order(-2) // before Spring Boot's DefaultErrorWebExceptionHandler (-1)
+@Order(-2)
 public class GatewayErrorHandler implements ErrorWebExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GatewayErrorHandler.class);

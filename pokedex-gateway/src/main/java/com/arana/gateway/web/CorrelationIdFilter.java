@@ -13,11 +13,6 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-/**
- * Gives every request a correlation id (reusing a well-formed incoming one), forwards it
- * downstream, echoes it in the response and writes one access log line per request.
- * A WebFilter, so it also covers the token and JWKS endpoints, not just routed calls.
- */
 @Component
 public class CorrelationIdFilter implements WebFilter, Ordered {
 

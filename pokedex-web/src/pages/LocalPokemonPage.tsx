@@ -6,7 +6,6 @@ import { useAuth } from '../auth/useAuth'
 import { useDeleteLocalPokemon, useLocalPokemon } from '../hooks/useLocalPokemon'
 import { formatDexNumber, formatKg, formatMeters, formatName } from '../utils/format'
 
-/** US04: view a local Pokemon and edit its proprietary fields. Admins can delete it. */
 export function LocalPokemonPage() {
   const id = Number(useParams().id)
   const { session, isAdmin } = useAuth()
@@ -60,7 +59,6 @@ export function LocalPokemonPage() {
       <section className="panel">
         <h2>My details</h2>
         {session ? (
-          // key resets the form when a newer version arrives (after save, reload or conflict).
           <LocalPokemonForm key={`${pokemon.id}-${pokemon.version}`} pokemon={pokemon} onReload={() => refetch()} />
         ) : (
           <>

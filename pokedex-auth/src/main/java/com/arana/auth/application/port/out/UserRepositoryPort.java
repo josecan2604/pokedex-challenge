@@ -12,8 +12,5 @@ public interface UserRepositoryPort {
 
     boolean existsByEmail(String email);
 
-    /**
-     * @throws com.arana.auth.domain.exception.ConflictException if a unique constraint is violated
-     */
     User save(User user);
 }

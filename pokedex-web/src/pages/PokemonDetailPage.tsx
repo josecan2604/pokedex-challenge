@@ -8,7 +8,6 @@ import { usePokemonDetail } from '../hooks/useCatalog'
 import { useSyncPokemon } from '../hooks/useLocalPokemon'
 import { formatDexNumber, formatKg, formatMeters, formatName } from '../utils/format'
 
-/** US02: image, stats, description and evolution chain. Signed-in users can save it (US03). */
 export function PokemonDetailPage() {
   const { idOrName = '' } = useParams()
   const { data: pokemon, isPending, isError, error, refetch } = usePokemonDetail(idOrName.toLowerCase())

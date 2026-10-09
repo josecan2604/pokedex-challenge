@@ -2,9 +2,6 @@ package com.arana.pokedex.domain.model;
 
 import java.util.List;
 
-/**
- * User Story 02: everything shown on the detail view.
- */
 public record PokemonDetail(
         int id,
         String name,

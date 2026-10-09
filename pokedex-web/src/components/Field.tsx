@@ -10,7 +10,6 @@ interface FieldProps {
   label: string
   error?: string
   hint?: string
-  /** Renders the control with the ids and aria attributes that tie it to its label, hint and error. */
   children: (control: ControlProps) => ReactNode
 }
 

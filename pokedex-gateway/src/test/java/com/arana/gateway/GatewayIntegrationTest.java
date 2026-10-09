@@ -18,11 +18,6 @@ import java.util.Base64;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Boots the real gateway on a random port in front of {@link StubBackend} (standing in for
- * pokedex-auth and pokedex-api) and walks the whole flow: token through the gateway ->
- * JWKS fetched from the auth server -> local validation -> routing -> status mapping.
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class GatewayIntegrationTest {
 
@@ -54,8 +49,6 @@ class GatewayIntegrationTest {
     void longerTimeout() {
         client = client.mutate().responseTimeout(Duration.ofSeconds(20)).build();
     }
-
-    // ---------- Identity routes (-> pokedex-auth) ----------
 
     @Test
     void tokenEndpointIsRoutedToTheAuthServer() throws Exception {
@@ -111,8 +104,6 @@ class GatewayIntegrationTest {
                 .exchange()
                 .expectStatus().isForbidden();
     }
-
-    // ---------- Resource routes (-> pokedex-api) ----------
 
     @Test
     void publicRouteIsForwardedWithoutToken() {

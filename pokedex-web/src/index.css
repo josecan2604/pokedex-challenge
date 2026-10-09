@@ -1,4 +1,3 @@
-/* ---------- Design tokens ---------- */
 :root {
   --brand: #e3350d;
   --brand-strong: #b82a09;
@@ -48,7 +47,6 @@
   }
 }
 
-/* ---------- Base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; background: var(--bg); }
 img { max-width: 100%; height: auto; }
@@ -67,7 +65,6 @@ code { background: var(--surface-2); padding: 0.1rem 0.35rem; border-radius: 4px
 .skip-link { position: absolute; left: -999px; top: 0; }
 .skip-link:focus { left: 1rem; top: 1rem; z-index: 10; background: var(--surface); padding: 0.5rem 1rem; }
 
-/* ---------- Layout ---------- */
 .app { min-height: 100vh; display: flex; flex-direction: column; }
 .header { background: var(--brand); color: #fff; position: sticky; top: 0; z-index: 5; box-shadow: var(--shadow); }
 .header__inner {
@@ -101,7 +98,6 @@ code { background: var(--surface-2); padding: 0.1rem 0.35rem; border-radius: 4px
 .page-header p { margin: 0; }
 .result-count { margin: 0 0 0.75rem; font-size: 0.9rem; }
 
-/* ---------- Buttons & forms ---------- */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem;
   padding: 0.55rem 1rem; border-radius: 8px; border: 1px solid var(--border);
@@ -140,7 +136,6 @@ input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: var(--
 .field__hint { margin: 0; font-size: 0.82rem; color: var(--muted); }
 .field__error { margin: 0; font-size: 0.85rem; color: var(--error-text); font-weight: 600; }
 
-/* ---------- Cards & grid ---------- */
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; transition: opacity 0.2s; }
 .grid.is-stale { opacity: 0.6; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); transition: transform 0.15s, box-shadow 0.15s; }
@@ -166,7 +161,6 @@ input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: var(--
 .facts--row dt { font-size: 0.8rem; }
 .facts--row dd { font-weight: 600; }
 
-/* ---------- Badges ---------- */
 .type-list, .tag-list { list-style: none; margin: 0.4rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.35rem; }
 .type { display: inline-block; padding: 0.15rem 0.6rem; border-radius: 999px; font-size: 0.78rem; font-weight: 700; color: #fff; background: #777; text-shadow: 0 1px 1px rgb(0 0 0 / 25%); }
 .tag { padding: 0.1rem 0.55rem; border-radius: 6px; font-size: 0.78rem; background: var(--info-bg); color: var(--info-text); font-weight: 600; }
@@ -177,11 +171,9 @@ input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: var(--
 .type--rock { background: #9c8a32; } .type--ghost { background: #5d4b85; } .type--dragon { background: #5a2fe0; }
 .type--dark { background: #5c4a3e; } .type--steel { background: #7f7f9c; } .type--fairy { background: #c7648f; }
 
-/* ---------- Pagination ---------- */
 .pagination { display: flex; justify-content: center; align-items: center; gap: 0.5rem; margin-top: 1.5rem; flex-wrap: wrap; }
 .pagination__status { padding: 0 0.5rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 
-/* ---------- Detail ---------- */
 .back-link { display: inline-block; margin-bottom: 1rem; font-weight: 600; text-decoration: none; }
 .detail__hero { display: grid; grid-template-columns: minmax(0, 340px) 1fr; gap: 2rem; align-items: start; margin-bottom: 1.5rem; }
 .detail__hero--compact { grid-template-columns: 180px 1fr; }
@@ -217,7 +209,6 @@ input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: var(--
 .evolution__member.is-current { border-color: var(--brand); }
 .evolution__member img { image-rendering: pixelated; }
 
-/* ---------- Feedback ---------- */
 .notice { border-radius: 8px; padding: 0.75rem 1rem; margin: 0.75rem 0; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
 .notice p { margin: 0; }
 .notice--success { background: var(--success-bg); color: var(--success-text); }
@@ -229,7 +220,6 @@ input[aria-invalid='true'], textarea[aria-invalid='true'] { border-color: var(--
 .spinner__circle { width: 40px; height: 40px; border-radius: 50%; border: 4px solid var(--surface-2); border-top-color: var(--brand); animation: spin 0.8s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ---------- Collection & auth ---------- */
 .sync-panel { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1rem 2rem; }
 .sync-panel__form label { display: block; font-weight: 600; margin-bottom: 0.35rem; }
 .sync-panel__feedback { grid-column: 1 / -1; }

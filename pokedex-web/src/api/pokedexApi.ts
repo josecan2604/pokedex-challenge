@@ -10,8 +10,6 @@ import type {
   TokenResponse,
 } from './types'
 
-/** Endpoint functions: the only place that knows URLs and HTTP verbs. */
-
 export const catalogApi = {
   browse: (page: number, size: number, signal?: AbortSignal) =>
     apiFetch<Page<PokemonSummary>>(`/api/pokemon?page=${page}&size=${size}`, { signal }),
@@ -47,7 +45,6 @@ export const authApi = {
   register: (username: string, email: string, password: string) =>
     apiFetch<RegisteredUser>('/auth/register', { method: 'POST', body: { username, email, password } }),
 
-  /** OAuth2 password grant: /oauth2/token is routed by the gateway to pokedex-auth (form-encoded, per RFC 6749). */
   async token(username: string, password: string): Promise<string> {
     let response: Response
     try {

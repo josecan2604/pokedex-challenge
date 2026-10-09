@@ -25,9 +25,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * Full stack: controllers, AuthService, BCrypt, JPA on H2 and the demo users seeded at startup.
- */
 @SpringBootTest
 @AutoConfigureMockMvc
 class AuthServerIntegrationTest {
@@ -51,7 +48,6 @@ class AuthServerIntegrationTest {
                     .andReturn().getResponse().getContentAsString();
             String accessToken = mapper.readTree(body).get("access_token").asText();
 
-            // Verify the signature exactly like a resource server would: with the public JWKS only.
             String jwks = mvc.perform(get("/oauth2/jwks")).andReturn().getResponse().getContentAsString();
             RSAPublicKey publicKey = JWKSet.parse(jwks).getKeys().getFirst().toRSAKey().toRSAPublicKey();
             NimbusJwtDecoder decoder = NimbusJwtDecoder.withPublicKey(publicKey).build();

@@ -8,10 +8,6 @@ import com.arana.pokedex.domain.model.PokemonSummary;
 
 import java.util.Optional;
 
-/**
- * The external source of Pokemon data. Implemented by the PokeAPI adapter;
- * the application layer never knows it is talking HTTP.
- */
 public interface PokemonCatalogPort {
 
     PageResult<PokemonSummary> findPage(PageRequest pageRequest);

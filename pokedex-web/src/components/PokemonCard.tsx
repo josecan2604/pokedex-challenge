@@ -3,7 +3,6 @@ import type { PokemonSummary } from '../api/types'
 import { formatDexNumber, formatKg, formatName } from '../utils/format'
 import { TypeList } from './TypeBadge'
 
-/** US01: sprite, category, weight and abilities for one catalog entry. */
 export function PokemonCard({ pokemon }: { pokemon: PokemonSummary }) {
   return (
     <article className="card">

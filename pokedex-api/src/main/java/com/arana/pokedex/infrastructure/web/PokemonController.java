@@ -20,10 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.Duration;
 import java.util.function.Function;
 
-/**
- * Public, read-only views over PokeAPI (User Stories 01 and 02).
- * The catalog records are immutable value objects, so they are serialized as they are.
- */
 @RestController
 @RequestMapping("/api/pokemon")
 @Tag(name = "Pokemon catalog", description = "Browse PokeAPI data (public)")

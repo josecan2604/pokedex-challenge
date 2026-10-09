@@ -27,10 +27,6 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-/**
- * Exercises the HTTP client, the mapper and the adapter together against canned PokeAPI
- * responses (trimmed copies of the real payloads in src/test/resources/pokeapi).
- */
 class PokeApiCatalogAdapterTest {
 
     private static final String BASE = "https://pokeapi.test/api/v2";

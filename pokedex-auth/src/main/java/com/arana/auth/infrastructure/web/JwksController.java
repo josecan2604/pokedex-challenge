@@ -16,10 +16,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Publishes the token verification keys. The gateway and the API download and cache them,
- * then validate every token locally: no call to this server per request.
- */
 @RestController
 @Tag(name = "OAuth2")
 public class JwksController {
@@ -28,7 +24,6 @@ public class JwksController {
     private final TokenProperties properties;
 
     public JwksController(RSAKey signingKey, TokenProperties properties) {
-        // toPublicJWKSet() strips the private parts: the private key never leaves this process.
         this.jwks = new JWKSet(signingKey).toPublicJWKSet().toJSONObject();
         this.properties = properties;
     }

@@ -19,10 +19,6 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-/**
- * Runs against H2 with the real Flyway migrations, including the seed data (V2).
- * Not transactional, so optimistic locking behaves as in production.
- */
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Import(LocalPokemonPersistenceAdapter.class)

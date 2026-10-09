@@ -128,7 +128,6 @@ class AuthServiceTest {
             assertThatThrownBy(() -> service.issueForCredentials("gary", "whatever1"))
                     .isInstanceOf(InvalidCredentialsException.class)
                     .hasMessage("Invalid username or password");
-            // Timing-attack mitigation: compared against the dummy hash.
             verify(hasher).matches(eq("whatever1"), eq("DUMMY_HASH"));
         }
 

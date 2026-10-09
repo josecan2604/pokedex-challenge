@@ -14,10 +14,6 @@ import org.springframework.stereotype.Component;
 import java.time.Clock;
 import java.util.List;
 
-/**
- * Creates the demo accounts listed in the README. Idempotent, and disabled with
- * {@code auth.seed.demo-users=false}. Done in code, not SQL, because passwords must be BCrypt-hashed.
- */
 @Component
 @ConditionalOnProperty(name = "auth.seed.demo-users", havingValue = "true", matchIfMissing = true)
 public class DemoUserSeeder implements ApplicationRunner {

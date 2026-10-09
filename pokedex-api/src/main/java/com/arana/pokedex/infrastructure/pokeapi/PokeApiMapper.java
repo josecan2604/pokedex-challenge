@@ -18,9 +18,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * Translates PokeAPI wire objects into domain models. Pure functions, no I/O.
- */
 final class PokeApiMapper {
 
     static final String SPRITE_URL_TEMPLATE =
@@ -60,10 +57,6 @@ final class PokeApiMapper {
                 chain == null ? List.of() : flattenEvolutionChain(chain.chain()));
     }
 
-    /**
-     * Walks the evolution tree breadth-first. Branches (Eevee, Wurmple) produce several
-     * stages with the same stage number, each pointing at its parent.
-     */
     static List<EvolutionStage> flattenEvolutionChain(ChainLink root) {
         List<EvolutionStage> stages = new ArrayList<>();
         if (root != null) {
@@ -81,9 +74,6 @@ final class PokeApiMapper {
         }
     }
 
-    /**
-     * PokeAPI resource URLs end with the id: https://pokeapi.co/api/v2/pokemon-species/25/
-     */
     static int idFromUrl(String url) {
         Objects.requireNonNull(url, "resource url");
         String trimmed = url.endsWith("/") ? url.substring(0, url.length() - 1) : url;
@@ -115,10 +105,6 @@ final class PokeApiMapper {
                 .orElse(null);
     }
 
-    /**
-     * Uses the most recent English entry, collapsing the form feeds and line breaks
-     * the game text contains.
-     */
     private static String descriptionOf(SpeciesResponse species) {
         if (species == null) {
             return null;
