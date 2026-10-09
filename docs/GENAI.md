@@ -217,9 +217,9 @@ everything, and test the edges myself.**
 
 ## 4. How GenAI was used in this project
 
-I defined the architecture and the requirements: the split into gateway, auth server and resource server,
+I created the whole code, specifically for the back end, also I defined the architecture and the requirements: the split into gateway, auth server and resource server,
 the OAuth2 flow with local JWT validation through JWKS at the gateway, and the user stories. I gave these to
-Claude Code as input. Based on them, the AI generated code, especially the frontend and the test cases.
+Claude Code as input. Based on them, the AI generated code for frontend and the test cases.
 
 I reviewed the output, asked for changes where it didn't fit the design (for example, moving identity into
 a dedicated auth service), and validated each step by running the tests and the services.
