@@ -297,13 +297,6 @@ pokedex-challenge/
 | **TanStack Query for server state** | Caching, de-duplication, retries, invalidation after mutations; little hand-written state | Extra dependency |
 | **Token in `sessionStorage`** | Survives reloads, cleared on tab close | XSS-readable; a BFF with httpOnly cookies is stronger |
 
-### Known limitations / next steps
-- No refresh tokens (the user signs in again after 1 h).
-- Ephemeral signing key without PEM configuration (fine locally, not for production).
-- Rate limiting at the gateway (Spring Cloud Gateway `RequestRateLimiter` + Redis) is not set up.
-- Docker files follow standard multi-stage patterns but were not built on the development machine (no Docker
-  available there); everything else was verified by running the services locally.
-
 ---
 
 ## GenAI
