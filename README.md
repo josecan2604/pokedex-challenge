@@ -19,7 +19,7 @@ PostgreSQL (H2 for zero-setup runs) · Caffeine cache · React 19 + TypeScript +
 6. [Security](#security)
 7. [Error handling](#error-handling)
 8. [Project structure](#project-structure)
-9. [Design decisions and trade-offs](#design-decisions-and-trade-offs)
+9. [Trade-offs](#trade-offs)
 10. [GenAI](#genai)
 
 ---
@@ -273,7 +273,7 @@ pokedex-challenge/
 
 ---
 
-## Design decisions and trade-offs
+## Trade-offs
 
 | Decision | Why | Trade-off |
 |---|---|---|
