@@ -37,9 +37,7 @@ public class LocalPokemonPersistenceAdapter implements LocalPokemonRepositoryPor
     public PageResult<LocalPokemon> findAll(PageRequest pageRequest, String search) {
         var pageable = org.springframework.data.domain.PageRequest.of(
                 pageRequest.page(), pageRequest.size(), Sort.by("id"));
-        Page<LocalPokemonEntity> page = search == null
-                ? repository.findAll(pageable)
-                : repository.search(search, pageable);
+        Page<LocalPokemonEntity> page = repository.findAll(LocalPokemonSpecifications.matchesSearch(search), pageable);
         return new PageResult<>(page.map(LocalPokemonPersistenceAdapter::toDomain).getContent(),
                 pageRequest.page(), pageRequest.size(), page.getTotalElements());
     }

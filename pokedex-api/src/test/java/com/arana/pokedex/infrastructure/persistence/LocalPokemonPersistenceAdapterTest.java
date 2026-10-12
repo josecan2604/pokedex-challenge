@@ -47,6 +47,37 @@ class LocalPokemonPersistenceAdapterTest {
     }
 
     @Test
+    void searchMatchesATagOnlyExactly() {
+        PageRequest page = new PageRequest(0, 50);
+
+        assertThat(names(adapter.findAll(page, "mascot"))).containsExactly("pikachu");
+        assertThat(names(adapter.findAll(page, "masc"))).isEmpty();
+    }
+
+    @Test
+    void searchTreatsLikeWildcardsAsPlainText() {
+        PageRequest page = new PageRequest(0, 50);
+
+        assertThat(adapter.findAll(page, "%").content()).isEmpty();
+        assertThat(adapter.findAll(page, "_").content()).isEmpty();
+    }
+
+    @Test
+    void searchPaginatesAndCountsMatchesOnly() {
+        PageResult<LocalPokemon> first = adapter.findAll(new PageRequest(0, 2), "starter");
+
+        assertThat(first.content()).extracting(LocalPokemon::getId).containsExactly(1, 4);
+        assertThat(first.totalElements()).isEqualTo(4);
+        assertThat(first.totalPages()).isEqualTo(2);
+    }
+
+    @Test
+    void blankSearchReturnsEverything() {
+        assertThat(adapter.findAll(new PageRequest(0, 50), "  ").totalElements())
+                .isEqualTo(adapter.findAll(new PageRequest(0, 50), null).totalElements());
+    }
+
+    @Test
     void findAllPaginatesSortedById() {
         PageResult<LocalPokemon> first = adapter.findAll(new PageRequest(0, 2), null);
 
